@@ -1,0 +1,6 @@
+{
+  "variables": {
+    "NOME_EVENTO": { "source": "config", "key": "evento" },
+    "NOME_REVISOR": { "source": "row", "column": "Nome" }
+  }
+}
