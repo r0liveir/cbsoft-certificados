@@ -1,6 +1,6 @@
 {
   "variables": {
-    "NOME_EVENTO": { "source": "config", "key": "evento" },
+    "NOME_EVENTO": { "source": "value", "value": "Simpósio Brasileiro de Linguagens de Programação (SBLP)" },
     "NOME_REVISOR": { "source": "row", "column": "Nome" }
   }
 }

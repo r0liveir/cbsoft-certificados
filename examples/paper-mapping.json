@@ -1,0 +1,7 @@
+{
+  "variables": {
+    "NOME_EVENTO": { "source": "value", "value": "Simpósio Brasileiro de Linguagens de Programação (SBLP)" },
+    "TITULO_ARTIGO": { "source": "row", "column": "Título" },
+    "LISTA_AUTORES": { "source": "row", "column": "Autores e Instituições" }
+  }
+}

@@ -32,28 +32,26 @@ def parse_mappings(raw: dict[str, Any] | None) -> dict[str, Mapping]:
         if not isinstance(value, dict):
             raise CertificateError(f"Mapping for {variable!r} must be an object.")
         source = value.get("source")
-        field = value.get("key") if source == "config" else value.get("column")
-        if source not in {"config", "row"} or not isinstance(field, str) or not field:
+        field = value.get("value") if source == "value" else value.get("column")
+        if source not in {"row", "value"} or not isinstance(field, str) or not field:
             raise CertificateError(
-                f"Mapping for {variable!r} needs source 'config' or 'row' and "
-                "a non-empty key/column."
+                f"Mapping for {variable!r} needs source 'row' or 'value' and "
+                "a non-empty column/value."
             )
         result[variable] = Mapping(source, field)
     return result
 
 
-def build_context(
-    variables: set[str], row: dict[str, str], config: dict[str, str], mappings: dict[str, Mapping]
-) -> dict[str, str]:
-    """Resolve template fields, preferring the row over workbook-wide config."""
+def build_context(variables: set[str], row: dict[str, str], mappings: dict[str, Mapping]) -> dict[str, str]:
+    """Resolve template fields from the current row and optional mapping values."""
     context: dict[str, str] = {}
     missing: list[str] = []
     for variable in sorted(variables):
         mapping = mappings.get(variable)
         if mapping:
-            value = (config if mapping.source == "config" else row).get(mapping.field)
+            value = mapping.field if mapping.source == "value" else row.get(mapping.field)
         else:
-            value = row.get(variable, config.get(variable))
+            value = row.get(variable)
         if value is None or not str(value).strip():
             missing.append(variable)
         else:
